@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +29,24 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::group(['middleware' => ['auth:api', 'role:admin', 'check-user-status']], function () {
+    Route::prefix('user')->group(function () {
+        Route::get('list', [AdminController::class, 'userList']);
+        Route::get('delete/{id}', [AdminController::class, 'deleteUser']);
+    });
+    Route::prefix('feedbacks')->group(function () {
+        Route::get('list', [AdminController::class, 'feedbackList']);
+        Route::get('delete/{id}', [AdminController::class, 'feedbackDelete']);
+    });
+});
+
+Route::group(['middleware' => ['auth:api', 'role:user', 'check-user-status']], function () {
+    Route::prefix('feedback')->group(function () {
+        Route::post('create', [FeedbackController::class, 'create']);
+        Route::get('list', [FeedbackController::class, 'list']);
+        Route::get('view/{id}', [FeedbackController::class, 'view']);
+        Route::get('vote/{id}', [FeedbackController::class, 'vote']);
+        Route::post('comment', [FeedbackController::class, 'comment']);
+    });
 });
 
 Route::any(
