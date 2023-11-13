@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,6 +49,9 @@ Route::group(['middleware' => ['auth:api', 'role:user', 'check-user-status']], f
         Route::get('vote/{id}', [FeedbackController::class, 'vote']);
         Route::post('comment', [FeedbackController::class, 'comment']);
         Route::get('comments/{id}', [FeedbackController::class, 'comments']);
+    });
+    Route::prefix('user')->group(function () {
+        Route::get('mention', [UserController::class, 'mention']);
     });
 });
 
