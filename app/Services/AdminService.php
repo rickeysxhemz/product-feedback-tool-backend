@@ -18,7 +18,7 @@ class AdminService extends BaseService
     public function userList()
     {
         try{
-            $users = User::role('user')->with('roles')->paginate(10);
+            $users = User::role('user')->paginate(10);
             return $users;
         }catch(Exception $e){
             $error = "Error: Message: " . $e->getMessage() . " File: " . $e->getFile() . " Line #: " . $e->getLine();
@@ -60,6 +60,19 @@ class AdminService extends BaseService
         }catch(Exception $e){
             $error = "Error: Message: " . $e->getMessage() . " File: " . $e->getFile() . " Line #: " . $e->getLine();
             Helper::errorLogs("AdminService: delete", $error);
+            return false;
+        }
+    }
+    public function CommentStatus($id)
+    {
+        try{
+            $status = Feedback::find($id);
+            $status->comment_status = ($status->comment_status === 'enable') ? 'disable' : 'enable';
+            $status->save();
+            return $status;
+        }catch(Exception $e){
+            $error = "Error: Message: " . $e->getMessage() . " File: " . $e->getFile() . " Line #: " . $e->getLine();
+            Helper::errorLogs("AdminService: CommentStatus", $error);
             return false;
         }
     }

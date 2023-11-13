@@ -46,7 +46,7 @@ class FeedbackService extends BaseService
     public function view($id)
     {
         try{
-            $feedback = Feedback::with('user')->where('id', $id)->first();
+            $feedback = Feedback::with(['user', 'comments.user'])->where('id', $id)->first();
             return $feedback;
         }catch(Exception $e){
             $error = "Error: Message: " . $e->getMessage() . " File: " . $e->getFile() . " Line #: " . $e->getLine();
@@ -94,6 +94,17 @@ class FeedbackService extends BaseService
         }catch(Exception $e){
             $error = "Error: Message: " . $e->getMessage() . " File: " . $e->getFile() . " Line #: " . $e->getLine();
             Helper::errorLogs("FeedbackService: comment", $error);
+            return false;
+        }
+    }
+    public function comments($id)
+    {
+        try{
+            $comments = Comment::with('user')->where('feedback_id', $id)->get();
+            return $comments;
+        }catch(Exception $e){
+            $error = "Error: Message: " . $e->getMessage() . " File: " . $e->getFile() . " Line #: " . $e->getLine();
+            Helper::errorLogs("FeedbackService: comments", $error);
             return false;
         }
     }

@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:api', 'role:admin', 'check-user-status']], 
     Route::prefix('feedbacks')->group(function () {
         Route::get('list', [AdminController::class, 'feedbackList']);
         Route::get('delete/{id}', [AdminController::class, 'feedbackDelete']);
+        Route::get('status/{id}', [AdminController::class, 'CommentStatus']);
     });
 });
 
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth:api', 'role:user', 'check-user-status']], f
         Route::get('view/{id}', [FeedbackController::class, 'view']);
         Route::get('vote/{id}', [FeedbackController::class, 'vote']);
         Route::post('comment', [FeedbackController::class, 'comment']);
+        Route::get('comments/{id}', [FeedbackController::class, 'comments']);
     });
 });
 

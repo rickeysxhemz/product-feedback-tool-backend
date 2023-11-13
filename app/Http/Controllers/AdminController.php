@@ -50,4 +50,12 @@ class AdminController extends Controller
        
         return ($this->global_api_response->success(1, "feedback deleted successfully!", $delete));
     }
+    public function CommentStatus($id)
+    {
+        $status = $this->admin_service->CommentStatus($id);
+        if (!$status)
+            return ($this->global_api_response->error(GlobalApiResponseCodeBook::INTERNAL_SERVER_ERROR, "Comment status did not updated!", $status));
+       
+        return ($this->global_api_response->success(1, "Comment status updated successfully!", $status));
+    }
 }

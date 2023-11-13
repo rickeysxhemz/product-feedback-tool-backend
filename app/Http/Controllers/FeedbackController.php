@@ -54,4 +54,11 @@ class FeedbackController extends Controller
             return ($this->global_api_response->error(GlobalApiResponseCodeBook::INTERNAL_SERVER_ERROR, "Feedback did not commented!", $comment));
         return ($this->global_api_response->success(1, "Feedback commented successfully!", $comment));
     }
+    public function comments($id)
+    {
+        $comments = $this->feedback_service->comments($id);
+        if (!$comments)
+            return ($this->global_api_response->error(GlobalApiResponseCodeBook::INTERNAL_SERVER_ERROR, "Feedback did not commented!", $comments));
+        return ($this->global_api_response->success(1, "Feedback commented successfully!", $comments));
+    }
 }
